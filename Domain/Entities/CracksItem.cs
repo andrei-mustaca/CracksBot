@@ -2,6 +2,16 @@ namespace Domain.Entities;
 
 public class CracksItem:BaseEntity
 {
+    public CracksItem(Guid drugId, Guid drugStoreId, decimal cost, int count, Cracks crack, CracksStore crackStore)
+    {
+        CrackId = drugId;
+        CrackStoreId = drugStoreId;
+        Cost = cost;
+        Count = count;
+        Crack = crack;
+        CrackStore = crackStore;
+    }
+    
     /// <summary>
     /// Идентификатор лекарства
     /// </summary>
@@ -18,4 +28,8 @@ public class CracksItem:BaseEntity
     /// Количество
     /// </summary>
     public int Count { get; set; }
+    
+    // Навигационные свойства
+    public Cracks Crack { get; private set; }
+    public CracksStore CrackStore { get; private set; }
 }

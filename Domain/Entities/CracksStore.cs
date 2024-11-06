@@ -6,6 +6,13 @@ namespace Domain.Entities;
 /// </summary>
 public class CracksStore: BaseEntity
 {
+    public CracksStore(string drugNetwork, int number, Address address)
+    {
+        CrackNetwork = drugNetwork;
+        PhoneNumber = number;
+        Address = address;
+    }
+    
     /// <summary>
     /// Сеть аптек
     /// </summary>
@@ -13,9 +20,12 @@ public class CracksStore: BaseEntity
     /// <summary>
     /// Адрес
     /// </summary>
-    public Address address { get; set; }
+    public Address Address { get; set; }
     /// <summary>
     /// Номер телефона
     /// </summary>
-    public string PhoneNumber { get; set; }
+    public int PhoneNumber { get; set; }
+    
+    // Навигационное свойство для связи с DrugItem
+    public ICollection<CracksItem> CracksItems { get; private set; } = new List<CracksItem>();
 }

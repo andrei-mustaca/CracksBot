@@ -12,22 +12,28 @@ public abstract class BaseEntity
     public Guid Id { get; protected set; }
 
     /// <summary>
-    /// Метод для сравнения
+    /// Конструктор по умолчанию, инициализирующий новый уникальный идентификатор.
     /// </summary>
-    /// <param name="obj"> параметр принимаемый методом</param>
-    /// <returns></returns>
-    protected bool Equals(object obj)
+    protected BaseEntity()
     {
-        //TODO: сравнение по id
-        //Проверка на null
-        if (obj == null || GetType() != obj.GetType())
-        {
+        Id = Guid.NewGuid();
+    }
+    
+    /// <summary>
+    /// Переопределение метода Equals для сравнения сущностей по идентификатору.
+    /// </summary>
+    /// <param name="obj">Объект для сравнения.</param>
+    /// <returns>True, если идентификаторы совпадают; иначе False.</returns>
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(this, obj))
+            return true;
+
+        if (obj is null || obj.GetType() != GetType())
             return false;
-        }
-        //Приведение к типу класса
+
         var other = (BaseEntity)obj;
-        return this.Id == other.Id;
-        
+        return Id.Equals(other.Id);
     }
 
     /// <summary>
@@ -45,18 +51,12 @@ public abstract class BaseEntity
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns></returns>
-    public static bool operator ==(BaseEntity left, BaseEntity right)
+    public static bool operator ==(BaseEntity? left, BaseEntity? right)
     {
-        if (ReferenceEquals(left, right))
-        {
-            return true;
-        }
+        if (left is null)
+            return right is null;
 
-        if (left is null || right is null)
-        {
-            return false;
-        }
-        return left.Id == right.Id;
+        return left.Equals(right);
     }
 
     //TODO: переопределить операторы == и !=
@@ -66,7 +66,7 @@ public abstract class BaseEntity
     /// <param name="left"></param>
     /// <param name="right"></param>
     /// <returns></returns>
-    public static bool operator !=(BaseEntity left, BaseEntity right)
+    public static bool operator !=(BaseEntity? left, BaseEntity? right)
     {
         return !(left == right);
     }
